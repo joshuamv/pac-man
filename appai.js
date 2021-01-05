@@ -169,10 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   ghosts = [
-    new Ghost("blinky", 348, 250),
-    new Ghost("pinky", 376, 400),
-    new Ghost("inky", 351, 300),
-    new Ghost("clyde", 379, 500)
+    new Ghost("blinky", 348, 800),
+    new Ghost("pinky", 376, 800),
+    new Ghost("inky", 351, 800),
+    new Ghost("clyde", 379, 800)
   ];
 
   //draw my ghosts onto the grid
@@ -193,37 +193,48 @@ document.addEventListener('DOMContentLoaded', () => {
       //if the next squre your ghost is going to go to does not have a ghost and does not have a wall
       if  (!squares[ghost.currentIndex + direction].classList.contains('ghost') &&
       !squares[ghost.currentIndex + direction].classList.contains('wall') ) {
+        //remove the ghosts classes
+        squares[ghost.currentIndex].classList.remove(ghost.className);
+        squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
         //check ghost new position distance relative to pacman to make it come closer
-        const [ghostX, ghostY] = getCoordinates(ghost.currentIndex);
-        const [pacmanX, pacmanY] = getCoordinates(pacmanCurrentIndex);
-        const [ghostNewX, ghostNewY] = getCoordinates(ghost.currentIndex + direction);
+
+        //coordinate arrays with x,y
+        const ghostCoord = (getCoordinates(ghost.currentIndex));
+        const pacmanCoord = (getCoordinates(pacmanCurrentIndex));
+        const ghostNewCoord = (getCoordinates(ghost.currentIndex + direction));
+        // console.log(pacmanCoord);
+        // console.log();
+        // console.log(ghostNewCoord);
+
         function isXCoordCloser() {
-          if ((ghostNewX - pacmanX) > (ghostX - pacmanX)) {
+          if ((ghostNewCoord[0] - pacmanCoord[0]) > (ghostCoord[0] - pacmanCoord[0])) {
+            console.log('true x');
             return true;
           } else {
+            console.log('false x');
             return false;
           }
         }
 
         function isYCoordCloser() {
-          if ((ghostNewY - pacmanY) > (ghostY - pacmanY)) {
+          if ((ghostNewCoord[1] - pacmanCoord[1]) > (ghostCoord[1] - pacmanCoord[1])) {
+            console.log('true y');
             return true;
           } else {
+            console.log('false y');
             return false;
           }
         }
 
-        if (isXCoordCloser || isYCoordCloser) {
-          //remove the ghosts classes
-          squares[ghost.currentIndex].classList.remove(ghost.className);
-          squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
+        if (isXCoordCloser() || isYCoordCloser()) {
           //move into that space
           ghost.currentIndex += direction;
           squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
         }else{
           squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+          direction = directions[Math.floor(Math.random() * directions.length)];
         }
-
+        squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
         //else find a new random direction ot go in
       } else direction = directions[Math.floor(Math.random() * directions.length)];
 
