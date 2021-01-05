@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  createBoard()
+  createBoard();
 
   //starting pacman position
 
