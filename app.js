@@ -222,11 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, ghost.speed);
   }
 
-  //check for level 3
-  function level3() {
-
-  }
-
   //check for game over
   function checkForGameOver() {
     if (squares[pacmanCurrentIndex].classList.contains('ghost') &&
