@@ -90,3 +90,8 @@ h3{
   background-color: yellow;
   border-radius: 10px;
 }
+
+#continue{
+  display: none;
+  font-size: 14px;
+}

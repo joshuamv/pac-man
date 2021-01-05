@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreName = document.getElementById('score-name');
   const width = 28; //28*28 = 784
   let score = 0;
+  let gameOver = false;
 
   const layout = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -169,10 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   ghosts = [
-    new Ghost("blinky", 348, 400),
-    new Ghost("pinky", 376, 300),
+    new Ghost("blinky", 348, 250),
+    new Ghost("pinky", 376, 250),
     new Ghost("inky", 351, 200),
-    new Ghost("clyde", 379, 150),
+    new Ghost("clyde", 379, 50),
     new Ghost("shminky", 750, 100),
     new Ghost("shminky", 35, 100),
     new Ghost("shminky", 50, 100),
@@ -233,6 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ghosts.forEach(ghost => clearInterval(ghost.timerId));
       document.removeEventListener('keydown', movePacman);
       scoreName.innerHTML = 'A ghost killed you, you lost!';
+      $("#continue").show();
+      gameOver = true;
     }
   }
 
@@ -242,6 +245,17 @@ document.addEventListener('DOMContentLoaded', () => {
       ghosts.forEach(ghost => clearInterval(ghost.timerId));
       document.removeEventListener('keydown', movePacman);
       scoreName.innerHTML = 'You reached 300, you won!';
+      $("#continue").show();
+      gameOver = true;
     }
   }
+
+  //restart
+  document.addEventListener('keyup', event => {
+    if (event.code === 'Space') {
+      if (gameOver) {
+        location.reload();
+      }
+    }
+  })
 });
