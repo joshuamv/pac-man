@@ -193,12 +193,37 @@ document.addEventListener('DOMContentLoaded', () => {
       //if the next squre your ghost is going to go to does not have a ghost and does not have a wall
       if  (!squares[ghost.currentIndex + direction].classList.contains('ghost') &&
       !squares[ghost.currentIndex + direction].classList.contains('wall') ) {
-        //remove the ghosts classes
-        squares[ghost.currentIndex].classList.remove(ghost.className);
-        squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
-        //move into that space
-        ghost.currentIndex += direction;
-        squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+        //check ghost new position distance relative to pacman to make it come closer
+        const [ghostX, ghostY] = getCoordinates(ghost.currentIndex);
+        const [pacmanX, pacmanY] = getCoordinates(pacmanCurrentIndex);
+        const [ghostNewX, ghostNewY] = getCoordinates(ghost.currentIndex + direction);
+        function isXCoordCloser() {
+          if ((ghostNewX - pacmanX) > (ghostX - pacmanX)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        function isYCoordCloser() {
+          if ((ghostNewY - pacmanY) > (ghostY - pacmanY)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        if (isXCoordCloser || isYCoordCloser) {
+          //remove the ghosts classes
+          squares[ghost.currentIndex].classList.remove(ghost.className);
+          squares[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
+          //move into that space
+          ghost.currentIndex += direction;
+          squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+        }else{
+          squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+        }
+
         //else find a new random direction ot go in
       } else direction = directions[Math.floor(Math.random() * directions.length)];
 
@@ -215,6 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       checkForGameOver();
     }, ghost.speed);
+  }
+
+  //check coordinates for ghosts and pacman
+  function getCoordinates(index) {
+    return[index % width, Math.floor(index / width)];
   }
 
   //check for game over
